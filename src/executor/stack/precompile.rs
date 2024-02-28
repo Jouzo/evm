@@ -72,6 +72,9 @@ pub trait PrecompileHandle {
 
 	/// Retreive the gas limit of this call.
 	fn gas_limit(&self) -> Option<u64>;
+
+	/// Get storage value of address at index.
+	fn storage(&self, address: H160, index: H256) -> H256;
 }
 
 /// A set of precompiles.

@@ -1451,4 +1451,9 @@ impl<'inner, 'config, 'precompiles, S: StackState<'config>, P: PrecompileSet> Pr
 	fn gas_limit(&self) -> Option<u64> {
 		self.gas_limit
 	}
+
+	/// Get storage value of address at index.
+	fn storage(&self, address: H160, index: H256) -> H256 {
+		self.executor.storage(address, index)
+	}
 }
