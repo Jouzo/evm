@@ -1,3 +1,4 @@
+use crate::backend::Apply;
 use crate::{Context, ExitError, ExitFatal, ExitReason, ExitRevert, ExitSucceed, Transfer};
 use alloc::{collections::BTreeMap, vec::Vec};
 use primitive_types::{H160, H256};
@@ -6,10 +7,11 @@ use primitive_types::{H160, H256};
 pub type PrecompileResult = Result<PrecompileOutput, PrecompileFailure>;
 
 /// Data returned by a precompile on success.
-#[derive(Debug, Eq, PartialEq, Clone)]
+#[derive(Debug, Clone)]
 pub struct PrecompileOutput {
 	pub exit_status: ExitSucceed,
 	pub output: Vec<u8>,
+	pub state_changes: Option<Apply<BTreeMap<H256, H256>>>,
 }
 
 /// Data returned by a precompile in case of failure.
