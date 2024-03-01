@@ -1,4 +1,4 @@
-use crate::backend::{Apply, Backend};
+use crate::backend::{Apply, Backend, Basic};
 use crate::executor::stack::precompile::{
 	IsPrecompileResult, PrecompileFailure, PrecompileHandle, PrecompileOutput, PrecompileSet,
 };
@@ -1455,5 +1455,10 @@ impl<'inner, 'config, 'precompiles, S: StackState<'config>, P: PrecompileSet> Pr
 	/// Get storage value of address at index.
 	fn storage(&self, address: H160, index: H256) -> H256 {
 		self.executor.storage(address, index)
+	}
+
+	/// Get basic account information.
+	fn basic(&self, address: H160) -> Basic {
+		self.executor.state.basic(address)
 	}
 }

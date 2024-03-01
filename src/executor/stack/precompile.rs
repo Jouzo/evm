@@ -1,4 +1,4 @@
-use crate::backend::Apply;
+use crate::backend::{Apply, Basic};
 use crate::{Context, ExitError, ExitFatal, ExitReason, ExitRevert, ExitSucceed, Transfer};
 use alloc::{collections::BTreeMap, vec::Vec};
 use primitive_types::{H160, H256};
@@ -75,6 +75,9 @@ pub trait PrecompileHandle {
 
 	/// Get storage value of address at index.
 	fn storage(&self, address: H160, index: H256) -> H256;
+
+	/// Get basic account information.
+	fn basic(&self, address: H160) -> Basic;
 }
 
 /// A set of precompiles.
