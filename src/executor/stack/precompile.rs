@@ -78,6 +78,9 @@ pub trait PrecompileHandle {
 
 	/// Get basic account information.
 	fn basic(&self, address: H160) -> Basic;
+
+	/// Get account code.
+	fn code(&self, address: H160) -> Vec<u8>;
 }
 
 /// A set of precompiles.

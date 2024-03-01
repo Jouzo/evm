@@ -1461,4 +1461,9 @@ impl<'inner, 'config, 'precompiles, S: StackState<'config>, P: PrecompileSet> Pr
 	fn basic(&self, address: H160) -> Basic {
 		self.executor.state.basic(address)
 	}
+
+	/// Get account code.
+	fn code(&self, address: H160) -> Vec<u8> {
+		self.executor.state.code(address)
+	}
 }
