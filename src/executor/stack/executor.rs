@@ -878,28 +878,34 @@ impl<'config, 'precompiles, S: StackState<'config>, P: PrecompileSet>
 					output,
 					state_changes,
 				}) => {
-					match state_changes {
-						Some(Apply::Modify {
-							address, storage, ..
-						}) => {
-							// TODO accept balance changes
-							// For now, only handle storage changes
-							for (k, v) in storage.into_iter() {
-								if let Err(e) = self.set_storage(address, k, v) {
-									let _ = self.exit_substate(StackExitKind::Failed);
-									return Capture::Exit((ExitReason::Error(e), Vec::new()));
+					if let Some(state_changes) = state_changes {
+						for changes in state_changes {
+							match changes {
+								Apply::Modify {
+									address, storage, ..
+								} => {
+									// TODO accept balance changes
+									// For now, only handle storage changes
+									for (k, v) in storage.into_iter() {
+										if let Err(e) = self.set_storage(address, k, v) {
+											let _ = self.exit_substate(StackExitKind::Failed);
+											return Capture::Exit((
+												ExitReason::Error(e),
+												Vec::new(),
+											));
+										}
+									}
+								}
+								Apply::Delete { address } => {
+									// Todo decide target
+									let target = H160::zero();
+									if let Err(e) = self.mark_delete(address, target) {
+										let _ = self.exit_substate(StackExitKind::Failed);
+										return Capture::Exit((ExitReason::Error(e), Vec::new()));
+									}
 								}
 							}
 						}
-						Some(Apply::Delete { address }) => {
-							// Todo decide target
-							let target = H160::zero();
-							if let Err(e) = self.mark_delete(address, target) {
-								let _ = self.exit_substate(StackExitKind::Failed);
-								return Capture::Exit((ExitReason::Error(e), Vec::new()));
-							}
-						}
-						None => (),
 					}
 
 					let _ = self.exit_substate(StackExitKind::Succeeded);

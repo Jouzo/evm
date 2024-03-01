@@ -11,7 +11,7 @@ pub type PrecompileResult = Result<PrecompileOutput, PrecompileFailure>;
 pub struct PrecompileOutput {
 	pub exit_status: ExitSucceed,
 	pub output: Vec<u8>,
-	pub state_changes: Option<Apply<BTreeMap<H256, H256>>>,
+	pub state_changes: Option<Vec<Apply<BTreeMap<H256, H256>>>>,
 }
 
 /// Data returned by a precompile in case of failure.
